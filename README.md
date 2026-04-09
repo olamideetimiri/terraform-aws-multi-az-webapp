@@ -152,7 +152,8 @@ This enables operational visibility and provides a mechanism for alerting when t
 
 ### 1. Clone the repository
 
-git clone https://github.com/yourusername/terraform-aws-multi-az-webapp.git
+git clone [https://github.com/yourusername/terraform-aws-multi-az-webapp.git](https://github.com/olamideetimiri/terraform-aws-multi-az-webapp)
+
 cd terraform-aws-multi-az-webapp
 
 ### 2. Create your variables file
