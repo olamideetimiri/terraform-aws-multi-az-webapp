@@ -118,7 +118,7 @@ Multi-AZ deployment is enabled, which provisions a synchronous standby database 
 
 If the primary database becomes unavailable, RDS automatically performs failover to the standby instance.
 
-This provides high availability and minimizes downtime without requiring manual intervention.
+This provides high availability and minimises downtime without requiring manual intervention.
 
 The database is placed in isolated private database subnets to prevent direct internet access.
 
@@ -132,7 +132,7 @@ Sensitive values such as the database password are stored as SecureString parame
 
 During instance startup, EC2 retrieves these values using the AWS CLI and injects them into the application environment.
 
-This avoids hardcoding credentials in the application code or Terraform configuration and enables centralized secrets management.
+This avoids hardcoding credentials in the application code or Terraform configuration and enables centralised secrets management.
 
 ---
 
@@ -140,11 +140,11 @@ This avoids hardcoding credentials in the application code or Terraform configur
 
 CloudWatch is used to monitor infrastructure health and application performance.
 
-Key metrics such as EC2 CPU utilization and ALB HTTP error rates are tracked.
+Key metrics such as EC2 CPU utilisation and ALB HTTP error rates are tracked.
 
 CloudWatch alarms trigger when defined thresholds are exceeded and publish notifications to an SNS topic.
 
-This enables operational visibility and provides a mechanism for alerting when the system experiences abnormal behavior.
+This enables operational visibility and provides a mechanism for alerting when the system experiences abnormal behaviour.
 
 ---
 
