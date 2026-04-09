@@ -1,0 +1,29 @@
+aws_region = "eu-west-2"
+
+project_name = "mazwi"
+
+vpc_cidr = "10.0.0.0/16"
+
+az_a = "eu-west-2a"
+az_b = "eu-west-2b"
+
+public_subnet_a_cidr = "10.0.1.0/24"
+public_subnet_b_cidr = "10.0.2.0/24"
+
+private_app_subnet_a_cidr = "10.0.3.0/24"
+private_app_subnet_b_cidr = "10.0.4.0/24"
+
+private_db_subnet_a_cidr = "10.0.5.0/24"
+private_db_subnet_b_cidr = "10.0.6.0/24"
+
+app_port = "8000"
+
+instance_type  = "t3.micro"
+ami_id         = "ami-061e1ade216078a11"
+user_data_path = "scripts/user-data.sh"
+
+db_name           = "appdb"
+db_username       = "appuser"
+db_password       = "change-me-securely"
+db_instance_class = "db.t3.micro"
+multi_az          = true
