@@ -150,9 +150,28 @@ This enables operational visibility and provides a mechanism for alerting when t
 
 # How to Deploy
 
-- terraform init
-- terraform plan
-- terraform apply
+### 1. Clone the repository
+
+git clone https://github.com/yourusername/terraform-aws-multi-az-webapp.git
+cd terraform-aws-multi-az-webapp
+
+### 2. Create your variables file
+
+Copy the example variables file and update values if necessary.
+
+cp terraform.tfvars.example terraform.tfvars
+
+### 3. Initialize Terraform
+
+terraform init
+
+### 4. Review the infrastructure plan
+
+terraform plan
+
+### 5. Deploy the infrastructure
+
+terraform apply
 
 After deployment, the application can be accessed via the ALB DNS name.
 
