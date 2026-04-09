@@ -29,15 +29,10 @@ Application instances retrieve database configuration from SSM Parameter Store d
 
 The Terraform code is organised into reusable modules.
 
-modules/
-
-vpc
-
-alb
-
-compute
-
-rds
+- vpc
+- alb
+- compute
+- rds
 
 Each module is responsible for a specific infrastructure component.
 
@@ -108,9 +103,9 @@ CloudWatch alarms monitor CPU utilisation and ALB 5xx errors and publish alerts 
 
 # How to Deploy
 
-terraform init
-terraform plan
-terraform apply
+- terraform init
+- terraform plan
+- terraform apply
 
 After deployment, the application can be accessed via the ALB DNS name.
 
@@ -118,15 +113,15 @@ After deployment, the application can be accessed via the ALB DNS name.
 
 # Example
 
-curl http://ALB-DNS/health
-curl http://ALB-DNS/db
-curl http://ALB-DNS/az
+- curl http://ALB-DNS/health
+- curl http://ALB-DNS/db
+- curl http://ALB-DNS/az
 
 ---
 
 # Cleanup
 
-terraform destroy
+- terraform destroy
 
 ---
 
