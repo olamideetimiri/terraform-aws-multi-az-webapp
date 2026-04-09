@@ -92,7 +92,7 @@ An Application Load Balancer (ALB) is deployed in public subnets and acts as the
 
 The ALB distributes incoming HTTP requests across EC2 instances running in multiple Availability Zones using a target group.
 
-Health checks are configured on the `/health` endpoint to ensure that traffic is only routed to healthy application instances.
+Health checks are configured on the /health endpoint to ensure that traffic is only routed to healthy application instances.
 
 This architecture improves both availability and resilience by automatically removing unhealthy instances from service.
 
@@ -128,7 +128,7 @@ The database is placed in isolated private database subnets to prevent direct in
 
 Database connection information (host, port, username, password, database name) is stored securely in AWS Systems Manager Parameter Store.
 
-Sensitive values such as the database password are stored as `SecureString` parameters.
+Sensitive values such as the database password are stored as SecureString parameters.
 
 During instance startup, EC2 retrieves these values using the AWS CLI and injects them into the application environment.
 
