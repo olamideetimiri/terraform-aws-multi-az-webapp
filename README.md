@@ -30,9 +30,13 @@ Application instances retrieve database configuration from SSM Parameter Store d
 The Terraform code is organised into reusable modules.
 
 modules/
+
 vpc
+
 alb
+
 compute
+
 rds
 
 Each module is responsible for a specific infrastructure component.
