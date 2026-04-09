@@ -106,7 +106,7 @@ The ASG distributes instances across multiple Availability Zones to improve faul
 
 If an instance becomes unhealthy or fails, the ASG automatically terminates it and launches a replacement.
 
-This mechanism provides **self-healing infrastructure** and allows the application layer to scale horizontally based on demand.
+This mechanism provides self-healing infrastructure and allows the application layer to scale horizontally based on demand.
 
 ---
 
