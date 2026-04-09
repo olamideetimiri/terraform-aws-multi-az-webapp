@@ -80,7 +80,7 @@ All inbound traffic to the application must pass through the Application Load Ba
 
 This significantly reduces the attack surface by preventing direct access to the compute layer.
 
-Outbound internet access (for package installation, updates, and retrieving parameters) is provided via a NAT Gateway located in a public subnet.
+Outbound internet access (for package installation, updates and retrieving parameters) is provided via a NAT Gateway located in a public subnet.
 
 This design follows AWS security best practices by isolating application infrastructure while still allowing controlled outbound connectivity.
 
