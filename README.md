@@ -21,6 +21,18 @@ Application instances retrieve database configuration from SSM Parameter Store d
 
 ---
 
+## Architecture Principles
+
+This architecture was designed following several core cloud design principles:
+
+- High availability across multiple Availability Zones
+- Secure network segmentation using private subnets
+- Infrastructure managed entirely through Terraform
+- Secret management using AWS SSM Parameter Store
+- Automated recovery using Auto Scaling
+
+---
+
 # Architecture Diagram
 
 ![Architecture Diagram](diagram.png)
@@ -63,41 +75,76 @@ Endpoints include:
 
 ### Private Subnets for Compute
 
-EC2 instances are deployed in private subnets to prevent direct internet access.
+Application EC2 instances are deployed in private subnets so they are not directly reachable from the public internet.  
+All inbound traffic to the application must pass through the Application Load Balancer.
 
-Outbound internet connectivity is provided via a NAT Gateway.
+This significantly reduces the attack surface by preventing direct access to the compute layer.
+
+Outbound internet access (for package installation, updates, and retrieving parameters) is provided via a NAT Gateway located in a public subnet.
+
+This design follows AWS security best practices by isolating application infrastructure while still allowing controlled outbound connectivity.
 
 ---
 
 ### Application Load Balancer
 
-The ALB distributes incoming traffic across EC2 instances in multiple Availability Zones, providing high availability.
+An Application Load Balancer (ALB) is deployed in public subnets and acts as the entry point for all user traffic.
+
+The ALB distributes incoming HTTP requests across EC2 instances running in multiple Availability Zones using a target group.
+
+Health checks are configured on the `/health` endpoint to ensure that traffic is only routed to healthy application instances.
+
+This architecture improves both availability and resilience by automatically removing unhealthy instances from service.
 
 ---
 
 ### Auto Scaling Group
 
-An ASG ensures that multiple application instances are always running and can scale based on demand.
+EC2 instances are managed by an Auto Scaling Group (ASG), which ensures that a desired number of application instances are always running.
+
+The ASG distributes instances across multiple Availability Zones to improve fault tolerance.
+
+If an instance becomes unhealthy or fails, the ASG automatically terminates it and launches a replacement.
+
+This mechanism provides **self-healing infrastructure** and allows the application layer to scale horizontally based on demand.
 
 ---
 
 ### RDS Multi-AZ Deployment
 
-RDS is configured with Multi-AZ failover to provide database redundancy and automatic failover in case of an AZ outage.
+The database layer is implemented using Amazon RDS for PostgreSQL.
+
+Multi-AZ deployment is enabled, which provisions a synchronous standby database in a second Availability Zone.
+
+If the primary database becomes unavailable, RDS automatically performs failover to the standby instance.
+
+This provides high availability and minimizes downtime without requiring manual intervention.
+
+The database is placed in isolated private database subnets to prevent direct internet access.
 
 ---
 
 ### SSM Parameter Store
 
-Database credentials and connection details are stored in SSM Parameter Store rather than hardcoded into the application.
+Database connection information (host, port, username, password, database name) is stored securely in AWS Systems Manager Parameter Store.
 
-EC2 instances retrieve these values securely during startup.
+Sensitive values such as the database password are stored as `SecureString` parameters.
+
+During instance startup, EC2 retrieves these values using the AWS CLI and injects them into the application environment.
+
+This avoids hardcoding credentials in the application code or Terraform configuration and enables centralized secrets management.
 
 ---
 
 ### CloudWatch Monitoring
 
-CloudWatch alarms monitor CPU utilisation and ALB 5xx errors and publish alerts to SNS topics.
+CloudWatch is used to monitor infrastructure health and application performance.
+
+Key metrics such as EC2 CPU utilization and ALB HTTP error rates are tracked.
+
+CloudWatch alarms trigger when defined thresholds are exceeded and publish notifications to an SNS topic.
+
+This enables operational visibility and provides a mechanism for alerting when the system experiences abnormal behavior.
 
 ---
 
