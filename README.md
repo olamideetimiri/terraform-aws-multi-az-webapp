@@ -178,11 +178,15 @@ After deployment, the application can be accessed via the ALB DNS name.
 
 ---
 
-# Example
+# Testing
 
-- curl http://ALB-DNS/health
-- curl http://ALB-DNS/db
-- curl http://ALB-DNS/az
+After deployment, open the Application Load Balancer DNS name in your browser.
+
+Available endpoints:
+
+/health → returns OK  
+/db → verifies database connectivity  
+/az → shows which Availability Zone served the request
 
 ---
 
