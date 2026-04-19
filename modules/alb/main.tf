@@ -1,4 +1,7 @@
+############################################
 # VARIABLES
+############################################
+
 variable "project_name" {}
 
 variable "vpc_id" {}
@@ -7,7 +10,10 @@ variable "public_subnet_ids" {}
 
 variable "app_port" {}
 
+############################################
 # ALB SECURITY GROUP
+############################################
+
 resource "aws_security_group" "alb" {
   name        = "${var.project_name}-alb-sg"
   description = "Security group for the application load balancer"
@@ -34,7 +40,10 @@ resource "aws_security_group" "alb" {
   }
 }
 
+############################################
 # APPLICATION LOAD BALANCER
+############################################
+
 resource "aws_lb" "this" {
   name               = "${var.project_name}-alb"
   internal           = false
@@ -47,7 +56,10 @@ resource "aws_lb" "this" {
   }
 }
 
+############################################
 # TARGET GROUP
+############################################
+
 resource "aws_lb_target_group" "this" {
   name     = "${var.project_name}-tg"
   port     = var.app_port
@@ -72,7 +84,10 @@ resource "aws_lb_target_group" "this" {
   }
 }
 
+############################################
 # LISTENER
+############################################
+
 resource "aws_lb_listener" "http" {
   load_balancer_arn = aws_lb.this.arn
   port              = 80
@@ -84,7 +99,10 @@ resource "aws_lb_listener" "http" {
   }
 }
 
+############################################
 # OUTPUTS
+############################################
+
 output "alb_dns_name" {
   value = aws_lb.this.dns_name
 }
