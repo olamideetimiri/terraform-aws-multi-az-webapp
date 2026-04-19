@@ -2,22 +2,40 @@
 set -e
 set -x
 
+############################################
 # Log user-data execution
+############################################
+
 exec > /var/log/user-data.log 2>&1
 
+############################################
 # Update system
+############################################
+
 yum update -y
 
+############################################
 # Install dependencies
+############################################
+
 yum install -y python3 python3-pip awscli
 
+############################################
 # Install postgres driver
+############################################
+
 pip3 install psycopg2-binary
 
+############################################
 # Create app directory
+############################################
+
 mkdir -p /opt/app
 
+############################################
 # Helper to retry SSM parameter fetches
+############################################
+
 get_param() {
   local name=$1
   local decrypt_flag=$2
@@ -31,14 +49,20 @@ get_param() {
   echo "$value"
 }
 
+############################################
 # Fetch DB config from SSM with retry
+############################################
+
 DB_HOST=$(get_param "/mazwi/db/host" "")
 DB_PORT=$(get_param "/mazwi/db/port" "")
 DB_NAME=$(get_param "/mazwi/db/name" "")
 DB_USER=$(get_param "/mazwi/db/username" "")
 DB_PASS=$(get_param "/mazwi/db/password" "--with-decryption")
 
+############################################
 # Write environment variables for systemd
+############################################
+
 cat <<EOF > /opt/app/env.sh
 DB_HOST=$DB_HOST
 DB_PORT=$DB_PORT
@@ -47,7 +71,10 @@ DB_USER=$DB_USER
 DB_PASS=$DB_PASS
 EOF
 
+############################################
 # Python application
+############################################
+
 cat <<'EOF' > /opt/app/app.py
 import os
 import psycopg2
@@ -122,7 +149,10 @@ server = HTTPServer(("0.0.0.0", 8000), Handler)
 server.serve_forever()
 EOF
 
+############################################
 # systemd service
+############################################
+
 cat <<EOF > /etc/systemd/system/app.service
 [Unit]
 Description=Python App
