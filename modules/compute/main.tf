@@ -1,4 +1,7 @@
+############################################
 # VARIABLES
+############################################
+
 variable "project_name" {}
 
 variable "vpc_id" {}
@@ -17,7 +20,10 @@ variable "app_port" {}
 
 variable "user_data_path" {}
 
+############################################
 # EC2 SECURITY GROUP
+############################################
+
 resource "aws_security_group" "ec2" {
   name        = "${var.project_name}-ec2-sg"
   description = "Security group for application EC2 instances"
@@ -44,7 +50,10 @@ resource "aws_security_group" "ec2" {
   }
 }
 
+############################################
 # IAM ROLE FOR EC2
+############################################
+
 resource "aws_iam_role" "ec2" {
   name = "${var.project_name}-ec2-role"
 
@@ -87,13 +96,19 @@ resource "aws_iam_instance_profile" "ec2" {
   role = aws_iam_role.ec2.name
 }
 
+############################################
 # IAM ROLE FOR SSM SESSION MANAGER
+############################################
+
 resource "aws_iam_role_policy_attachment" "ssm_core" {
   role       = aws_iam_role.ec2.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
 
+############################################
 # LAUNCH TEMPLATE
+############################################
+
 resource "aws_launch_template" "app" {
   name_prefix   = "${var.project_name}-lt-"
   image_id      = var.ami_id
@@ -116,7 +131,10 @@ resource "aws_launch_template" "app" {
   }
 }
 
+############################################
 # AUTO SCALING GROUP
+############################################
+
 resource "aws_autoscaling_group" "app" {
   name                = "${var.project_name}-asg"
   vpc_zone_identifier = var.private_app_subnet_ids
@@ -141,7 +159,10 @@ resource "aws_autoscaling_group" "app" {
   }
 }
 
+############################################
 # OUTPUTS
+############################################
+
 output "ec2_security_group_id" {
   value = aws_security_group.ec2.id
 }
