@@ -1,4 +1,7 @@
+############################################
 # VARIABLES
+############################################
+
 variable "project_name" {}
 
 variable "vpc_id" {}
@@ -17,7 +20,10 @@ variable "db_instance_class" {}
 
 variable "multi_az" {}
 
+############################################
 # RDS SECURITY GROUP
+############################################
+
 resource "aws_security_group" "rds" {
   name        = "${var.project_name}-rds-sg"
   description = "Security group for RDS"
@@ -44,7 +50,10 @@ resource "aws_security_group" "rds" {
   }
 }
 
+############################################
 # DB SUBNET GROUP
+############################################
+
 resource "aws_db_subnet_group" "this" {
   name       = "${var.project_name}-db-subnet-group"
   subnet_ids = var.private_db_subnet_ids
@@ -53,8 +62,10 @@ resource "aws_db_subnet_group" "this" {
     Name = "${var.project_name}-db-subnet-group"
   }
 }
-
+############################################
 # RDS INSTANCE
+############################################
+
 resource "aws_db_instance" "this" {
   identifier             = "${var.project_name}-db"
   allocated_storage      = 20
@@ -76,7 +87,10 @@ resource "aws_db_instance" "this" {
   }
 }
 
+############################################
 # OUTPUTS
+############################################
+
 output "db_endpoint" {
   value = aws_db_instance.this.address
 }
